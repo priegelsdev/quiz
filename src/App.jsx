@@ -24,35 +24,37 @@ export default function App() {
   // function to toggle/log answer; two loops to set the isLogged property of a single answer
   // within the questions.answers array to true; could use some refactoring...
   function toggleAnswer(id) {
-    setQuestions(prevState => {
-      const newQuestionsArray = []
+  
+    if (!showAnswers) {
+      setQuestions(prevState => {
+        const newQuestionsArray = []
 
-      for (let i = 0; i < prevState.length; i++) {
-        const newAnswersArray = []
-        
-        for (let j = 0; j < prevState[i].answers.length; j++) {
-          const currentAnswer = prevState[i].answers[j]
+        for (let i = 0; i < prevState.length; i++) {
+          const newAnswersArray = []
+          
+          for (let j = 0; j < prevState[i].answers.length; j++) {
+            const currentAnswer = prevState[i].answers[j]
 
-          if (currentAnswer.id === id) {
-            const updatedAnswer = {
-              ...currentAnswer,
-              isLogged: !currentAnswer.isLogged
+            if (currentAnswer.id === id) {
+              const updatedAnswer = {
+                ...currentAnswer,
+                isLogged: !currentAnswer.isLogged
+              }
+              newAnswersArray.push(updatedAnswer)
+            } else {
+              newAnswersArray.push(currentAnswer)
             }
-            newAnswersArray.push(updatedAnswer)
-          } else {
-            currentAnswer.isLogged = false
-            newAnswersArray.push(currentAnswer)
           }
-        }
-        
-        newQuestionsArray.push({
-          ...prevState[i],
-          answers: newAnswersArray
-        })
+          
+          newQuestionsArray.push({
+            ...prevState[i],
+            answers: newAnswersArray
+          })
 
-      }
-      return newQuestionsArray
-    })
+        }
+        return newQuestionsArray
+      })
+    } 
 
   }
 
