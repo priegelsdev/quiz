@@ -21,6 +21,11 @@ export default function App() {
     }
   }
 
+  // function to toggle/log answer
+  function toggleAnswer() {
+
+  }
+
   // function to decode JSON output from API to turn encoded characters into readable chars
   function htmlDecode(input) {
     let doc = new DOMParser().parseFromString(input, "text/html");
@@ -60,10 +65,16 @@ export default function App() {
             const incorrectAnswers = []
             const allAnswers = []
 
-            allAnswers.push(htmlDecode(result.correct_answer))
+            allAnswers.push({
+              answer: htmlDecode(result.correct_answer),
+              isLogged: false
+            })
             result.incorrect_answers.map(wrongAnswer => incorrectAnswers.push(htmlDecode(wrongAnswer)))
             
-            incorrectAnswers.forEach(wrongAnswer => allAnswers.push(wrongAnswer))
+            incorrectAnswers.forEach(wrongAnswer => allAnswers.push({
+              answer: wrongAnswer,
+              isLogged: false
+            }))
 
             shuffle(allAnswers)
 
