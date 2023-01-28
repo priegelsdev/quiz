@@ -142,3 +142,11 @@ hr {
   outline: 1px solid red;
 }
 
+.button-score {
+  display: flex;
+}
+
+.score {
+  margin-left: auto;
+  font-weight: bold;
+}

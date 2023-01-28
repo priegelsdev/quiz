@@ -69,12 +69,15 @@ export default function App() {
 
   // helper function to shuffle array of answers
   function shuffle(array) {
-    for (let i = array.length -1; i > 0; i--) {
-      let j = Math.floor(Math.random() * i)
-      let k = array[i]
-      array[i] = array[j]
-      array[j] = k
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
+  }
+
+  function shuffleObjects(array) {
+    array.sort(() => Math.random() - 0.5)
     return array
   }
 
@@ -113,11 +116,9 @@ export default function App() {
               id: crypto.randomUUID()
             }))
 
-            shuffle(allAnswers)
-
             return {
               question: question,
-              answers: allAnswers,
+              answers: shuffle(allAnswers),
               correctAnswer: htmlDecode(result.correct_answer)
             }
           })
@@ -146,13 +147,15 @@ export default function App() {
           {questionElements}
         </div>
       }
-
-      <button 
-        className="check-btn" 
-        onClick={handleClick}
-      >
-        Start Quiz {/* add logic so text will show check answers or restart game later on*/}
-      </button> 
+      <div className="button-score">
+        {showAnswers && <p className="score">You scored /5 correct answers</p>}
+        <button 
+          className="check-btn" 
+          onClick={handleClick}
+        >
+          Start Quiz
+        </button> 
+      </div>
       <img className="blob-two" src={blobTwo}/>
     </main>
   )

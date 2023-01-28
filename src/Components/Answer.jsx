@@ -1,4 +1,5 @@
 export default function Answer(props) {
+  let score = 0;
 
   const stylesUnchecked = {
     border: props.isLogged ? 'none' : '1px solid #4D5B9E',
@@ -13,6 +14,7 @@ export default function Answer(props) {
 
   function bgColorCheck() {
     if (props.correctAnswer === props.text) {
+      score += 1;
       return '#94D7A2'
     } else if (props.correctAnswer != props.text && props.isLogged) {
       return '#F6D9DB'

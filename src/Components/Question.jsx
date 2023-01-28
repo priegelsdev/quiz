@@ -27,6 +27,7 @@ export default function Question(props) {
       <div className="answers-container">
         {answerElements}
       </div>
+      <hr></hr>
     </div>
   )
 }
