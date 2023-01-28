@@ -13,11 +13,14 @@ export default function App() {
   function handleClick() {
     if (!gameStart) {
       setGameStart(true)
+      document.querySelector('.check-btn').innerText = 'Check answers'
     } else if (gameStart && !showAnswers) {
-      console.log('check answers')
+      document.querySelector('.check-btn').innerText = 'Play again'
       setShowAnswers(true)
     } else {
-      console.log('restart game')
+      setGameStart(prevState => !prevState)
+      setShowAnswers(prevState => !prevState)
+      document.querySelector('.check-btn').innerText = 'Start quiz'
     }
   }
 
