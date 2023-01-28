@@ -128,6 +128,21 @@ export default function App() {
         })
   }, [gameStart])
 
+  function countScore() {
+    if (gameStart) {
+      let score = 0;
+
+      questions.filter(question => question.answers.map(answer => {
+
+        if (question.correctAnswer == answer.answer && answer.isLogged) {
+          score += 1;
+        } 
+      }))
+
+      return score 
+    }   
+  }
+
   const questionElements = questions.map(question => {
     return <Question 
       key = {crypto.randomUUID()}
@@ -148,7 +163,7 @@ export default function App() {
         </div>
       }
       <div className="button-score">
-        {showAnswers && <p className="score">You scored /5 correct answers</p>}
+        {showAnswers && <p className="score">You scored {countScore()}/5 correct answers</p>}
         <button 
           className="check-btn" 
           onClick={handleClick}
