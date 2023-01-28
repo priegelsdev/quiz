@@ -35,7 +35,7 @@ export default function App() {
           const newAnswersArray = prevState[i].answers.map(answer => {
             return answer.id === id ?
             {...answer, isLogged: !answer.isLogged} :
-            answer
+            {...answer, isLogged: false}
           })
           newQuestionsArray.push({...prevState[i], answers: newAnswersArray})
         }
@@ -57,11 +57,6 @@ export default function App() {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
-
-  function shuffleObjects(array) {
-    array.sort(() => Math.random() - 0.5)
-    return array
   }
 
   // effect to fetch questions on game start
