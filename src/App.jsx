@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Intro from './Components/Intro'
+import Question from './Components/Question'
 import blobOne from './assets/img/blob1.png'
 import blobTwo from './assets/img/blob2.png'
 
@@ -24,10 +25,6 @@ export default function App() {
     return doc.documentElement.textContent
   }
 
-  function decodeRes(array) {
-    array.forEach()
-  }
-
   // helper function to shuffle array of answers
   function shuffle(array) {
     for (let i = array.length -1; i > 0; i--) {
@@ -38,24 +35,6 @@ export default function App() {
     }
     return array
   }
-
-/* 
-  {
-    question: 'q',
-    answers: [{
-      answer: answer,
-      isCorrect: true,
-      isLogged: false,
-      isShown: false
-    },
-    {
-      answer: incorrect_answer,
-      isLogged: false,
-      isShown: false
-    }]
-  }
-*/
-
 
   // effect to fetch questions on game start
   useEffect(() => {
@@ -88,35 +67,34 @@ export default function App() {
 
             return {
               question: question,
-              answers: allAnswers
+              answers: allAnswers,
+              correctAnswer: htmlDecode(result.correct_answer)
             }
           })
 
           setQuestions(questions)
 
-
-/*           const questions = data.results.map(result => (
-            { 
-              question: htmlDecode(result.question),
-              answers: [{
-
-              }],
-
-              correctAnswer: htmlDecode(result.correct_answer),
-              incorrectAnswers: htmlDecode(result.incorrect_answers),
-            }
-            )) */
-
           console.log(questions)
-
 
         })
   }, [gameStart])
+
+  const questionElements = questions.map(question => {
+    return <Question 
+      key = {crypto.randomUUID()}
+      question = {question.question}
+      answers = {question.answers}
+      correctAnswer = {question.correctAnswer}
+    />
+  })
 
   return (
     <main>
       <img className="blob-one" src={blobOne}/>
       {!gameStart && <Intro />}
+      {gameStart && <div className="quiz-container">
+          {questionElements}
+        </div>}
       <button 
         className="check-btn" 
         onClick={handleClick}
