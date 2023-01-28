@@ -15,6 +15,7 @@ export default function Question(props) {
       id = {crypto.randomUUID()}
       correctAnswer = {props.correctAnswer}
       text = {answer}
+      isChecked = {props.isChecked}
     />
   })
 

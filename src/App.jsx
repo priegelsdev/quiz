@@ -7,13 +7,15 @@ import blobTwo from './assets/img/blob2.png'
 export default function App() {
   const [gameStart, setGameStart] = useState(false)
   const [questions, setQuestions] = useState([])
+  const [showAnswers, setShowAnswers] = useState(false)
 
   // function to handle button click as button stays on page to deal with different things
   function handleClick() {
     if (!gameStart) {
       setGameStart(true)
-    } else if (gameStart) {
+    } else if (gameStart && !showAnswers) {
       console.log('check answers')
+      setShowAnswers(true)
     } else {
       console.log('restart game')
     }
@@ -85,6 +87,7 @@ export default function App() {
       question = {question.question}
       answers = {question.answers}
       correctAnswer = {question.correctAnswer}
+      isChecked = {showAnswers}
     />
   })
 
@@ -94,7 +97,9 @@ export default function App() {
       {!gameStart && <Intro />}
       {gameStart && <div className="quiz-container">
           {questionElements}
-        </div>}
+        </div>
+      }
+
       <button 
         className="check-btn" 
         onClick={handleClick}
