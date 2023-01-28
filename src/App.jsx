@@ -21,8 +21,37 @@ export default function App() {
     }
   }
 
-  // function to toggle/log answer
-  function toggleAnswer() {
+  // function to toggle/log answer; two loops to set the isLogged property of a single answer
+  // within the questions.answers array to true; could use some refactoring...
+  function toggleAnswer(id) {
+    setQuestions(prevState => {
+      const newQuestionsArray = []
+
+      for (let i = 0; i < prevState.length; i++) {
+        const newAnswersArray = []
+        
+        for (let j = 0; j < prevState[i].answers.length; j++) {
+          const currentAnswer = prevState[i].answers[j]
+
+          if (currentAnswer.id === id) {
+            const updatedAnswer = {
+              ...currentAnswer,
+              isLogged: !currentAnswer.isLogged
+            }
+            newAnswersArray.push(updatedAnswer)
+          } else {
+            newAnswersArray.push(currentAnswer)
+          }
+        }
+        
+        newQuestionsArray.push({
+          ...prevState[i],
+          answers: newAnswersArray
+        })
+
+      }
+      return newQuestionsArray
+    })
 
   }
 
@@ -67,13 +96,15 @@ export default function App() {
 
             allAnswers.push({
               answer: htmlDecode(result.correct_answer),
-              isLogged: false
+              isLogged: false,
+              id: crypto.randomUUID()
             })
             result.incorrect_answers.map(wrongAnswer => incorrectAnswers.push(htmlDecode(wrongAnswer)))
             
             incorrectAnswers.forEach(wrongAnswer => allAnswers.push({
               answer: wrongAnswer,
-              isLogged: false
+              isLogged: false,
+              id: crypto.randomUUID()
             }))
 
             shuffle(allAnswers)
@@ -87,8 +118,6 @@ export default function App() {
 
           setQuestions(questions)
 
-          console.log(questions)
-
         })
   }, [gameStart])
 
@@ -99,6 +128,7 @@ export default function App() {
       answers = {question.answers}
       correctAnswer = {question.correctAnswer}
       isChecked = {showAnswers}
+      onClick = {toggleAnswer}
     />
   })
 

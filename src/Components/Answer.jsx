@@ -4,7 +4,7 @@ export default function Answer(props) {
     '1px solid red'}
 
   return (
-    <span className="answer" style={styles}>
+    <span className="answer" style={styles} onClick={props.onClick}>
       {props.text}
     </span>
   )
