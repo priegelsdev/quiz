@@ -71,20 +71,28 @@ export default function App() {
         .then(res => res.json())
         .then(data => {
 
-          data.results.map(result => {
-            const allAnswers = []
+          const questions = data.results.map(result => {
+            // LOGIC FOR QUESTIONS TO BE ENCODED 
+            const question = htmlDecode(result.question)
+
+            // LOGIC FOR ANSWERS TO BE ENCODED AND SHUFFLED
             const incorrectAnswers = []
+            const allAnswers = []
+
             allAnswers.push(htmlDecode(result.correct_answer))
             result.incorrect_answers.map(wrongAnswer => incorrectAnswers.push(htmlDecode(wrongAnswer)))
             
-            console.log(incorrectAnswers)
-            console.log(allAnswers)
+            incorrectAnswers.forEach(wrongAnswer => allAnswers.push(wrongAnswer))
+
+            shuffle(allAnswers)
+
+            return {
+              question: question,
+              answers: allAnswers
+            }
           })
 
-
-          const questions = data.results.map(result => {
-            const answersArray = shuffle(result) 
-          })
+          setQuestions(questions)
 
 
 /*           const questions = data.results.map(result => (
@@ -99,8 +107,7 @@ export default function App() {
             }
             )) */
 
-          setQuestions(questions)
-          console.log(data.results)
+          console.log(questions)
 
 
         })
