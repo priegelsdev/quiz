@@ -40,6 +40,7 @@ export default function App() {
             }
             newAnswersArray.push(updatedAnswer)
           } else {
+            currentAnswer.isLogged = false
             newAnswersArray.push(currentAnswer)
           }
         }

@@ -16,6 +16,7 @@ export default function Question(props) {
       correctAnswer = {props.correctAnswer}
       text = {answer.answer}
       isChecked = {props.isChecked}
+      isLogged = {answer.isLogged}
       onClick = {() => props.onClick(answer.id)}
     />
   })
