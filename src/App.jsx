@@ -25,24 +25,26 @@ export default function App() {
   }
 
   // function to toggle/log answer; two loops to set the isLogged property of a single answer
-  // within the questions.answers array to true; could use some refactoring...
-  function toggleAnswer(id) {
+  // within the questions.answers array to true; 
+  function toggleAnswer(id, questionId) {
     if (!showAnswers) {
       setQuestions(prevState => {
-        const newQuestionsArray = []
-
-        for (let i = 0; i < prevState.length; i++) {
-          const newAnswersArray = prevState[i].answers.map(answer => {
-            return answer.id === id ?
-            {...answer, isLogged: !answer.isLogged} :
-            {...answer, isLogged: false}
-          })
-          newQuestionsArray.push({...prevState[i], answers: newAnswersArray})
-        }
+        const newQuestionsArray = prevState.map(question => {
+          if (question.questionId === questionId) {
+            const newAnswersArray = question.answers.map(answer => {
+              return answer.id === id ?
+              {...answer, isLogged: !answer.isLogged} :
+              {...answer, isLogged: false}
+            })
+            return {...question, answers: newAnswersArray}
+          }
+          return question
+        })
         return newQuestionsArray
       })
     }
   }
+  
 
   // function to decode JSON output from API to turn encoded characters into readable chars
   function htmlDecode(input) {
@@ -73,7 +75,7 @@ export default function App() {
         .then(res => res.json())
         .then(data => {
 
-          const questions = data.results.map(result => {
+          const questions = data.results.map((result, index) => {
             // LOGIC FOR QUESTIONS TO BE ENCODED 
             const question = htmlDecode(result.question)
 
@@ -84,17 +86,20 @@ export default function App() {
             allAnswers.push({
               answer: htmlDecode(result.correct_answer),
               isLogged: false,
-              id: crypto.randomUUID()
+              id: crypto.randomUUID(),
+              questionId: index
             })
             result.incorrect_answers.map(wrongAnswer => incorrectAnswers.push(htmlDecode(wrongAnswer)))
             
             incorrectAnswers.forEach(wrongAnswer => allAnswers.push({
               answer: wrongAnswer,
               isLogged: false,
-              id: crypto.randomUUID()
+              id: crypto.randomUUID(),
+              questionId: index
             }))
 
             return {
+              questionId: index,
               question: question,
               answers: shuffle(allAnswers),
               correctAnswer: htmlDecode(result.correct_answer)
