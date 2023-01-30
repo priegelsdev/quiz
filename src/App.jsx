@@ -18,6 +18,7 @@ export default function App() {
       document.querySelector('.check-btn').innerText = 'Play again'
       setShowAnswers(true)
     } else {
+      setQuestions([])
       setGameStart(prevState => !prevState)
       setShowAnswers(prevState => !prevState)
       document.querySelector('.check-btn').innerText = 'Start quiz'
@@ -66,48 +67,43 @@ export default function App() {
     fetch('https://opentdb.com/api.php?amount=5&type=multiple', 
       {
         method: "GET",
-/*         headers: {
-          'Accept': 'application/json, charset=UTF-8',
-          "Content-Type": "application/json; charset=UTF-8;",
-          'Accept-Charset': 'utf-8'
-        } */
       })
         .then(res => res.json())
         .then(data => {
+          if (gameStart) {
+            const questions = data.results.map((result, index) => {
+              // LOGIC FOR QUESTIONS TO BE ENCODED 
+              const question = htmlDecode(result.question)
 
-          const questions = data.results.map((result, index) => {
-            // LOGIC FOR QUESTIONS TO BE ENCODED 
-            const question = htmlDecode(result.question)
+              // LOGIC FOR ANSWERS TO BE ENCODED AND SHUFFLED
+              const incorrectAnswers = []
+              const allAnswers = []
 
-            // LOGIC FOR ANSWERS TO BE ENCODED AND SHUFFLED
-            const incorrectAnswers = []
-            const allAnswers = []
+              allAnswers.push({
+                answer: htmlDecode(result.correct_answer),
+                isLogged: false,
+                id: crypto.randomUUID(),
+                questionId: index
+              })
+              result.incorrect_answers.map(wrongAnswer => incorrectAnswers.push(htmlDecode(wrongAnswer)))
+              
+              incorrectAnswers.forEach(wrongAnswer => allAnswers.push({
+                answer: wrongAnswer,
+                isLogged: false,
+                id: crypto.randomUUID(),
+                questionId: index
+              }))
 
-            allAnswers.push({
-              answer: htmlDecode(result.correct_answer),
-              isLogged: false,
-              id: crypto.randomUUID(),
-              questionId: index
+              return {
+                questionId: index,
+                question: question,
+                answers: shuffle(allAnswers),
+                correctAnswer: htmlDecode(result.correct_answer)
+              }
             })
-            result.incorrect_answers.map(wrongAnswer => incorrectAnswers.push(htmlDecode(wrongAnswer)))
-            
-            incorrectAnswers.forEach(wrongAnswer => allAnswers.push({
-              answer: wrongAnswer,
-              isLogged: false,
-              id: crypto.randomUUID(),
-              questionId: index
-            }))
 
-            return {
-              questionId: index,
-              question: question,
-              answers: shuffle(allAnswers),
-              correctAnswer: htmlDecode(result.correct_answer)
-            }
-          })
-
-          setQuestions(questions)
-
+            setQuestions(questions)
+          }
         })
   }, [gameStart])
 
