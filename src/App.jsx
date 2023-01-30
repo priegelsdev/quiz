@@ -18,6 +18,7 @@ export default function App() {
       document.querySelector('.check-btn').innerText = 'Play again'
       setShowAnswers(true)
     } else {
+      /*  set questions to empty so old game doesn't show up on replay */
       setQuestions([])
       setGameStart(prevState => !prevState)
       setShowAnswers(prevState => !prevState)

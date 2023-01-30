@@ -69,7 +69,7 @@ h2 {
 }
 
 .intro-description {
-  margin: 0 auto 1.8em;
+  margin: 0 auto 1.5em;
 }
 
 /** QUESTION COMPONENT **/
@@ -150,4 +150,8 @@ hr {
 .score {
   margin-left: auto;
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+
 }
