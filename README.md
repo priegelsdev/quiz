@@ -1,15 +1,18 @@
-# Copy Wordle
+# Trivia Trove
 
 ## Purpose
-This project is a copy of the popular game "Wordle". The goal was to recreate the app from scratch and add a color mode as well as another language option.
-It is using two JSON files with words containing 5 letters.
-The web app is built using TypeScript, React and Tailwind. 
+A quiz app pulling data from an external API (https://opentdb.com/api_config.php) in a single page application.
 
 ## Key Features
-- Retrieve random word from word list
-- Show correctly guessed letters depending on position, using different colors to distinguish 
-- Dark mode on click
-- German language option with added "Umlauts" for the keyboard input
+- Fetch data from an external API
+- Pass states and props 
+- User can click answers to questions and get visual feedback for correct/incorrect answers
+- User sees score at end
 
 ## Usage
-Check out the live demo here: https://copy-wordle.netlify.app/
+Check out the live demo here: https://trivia-trove.netlify.app/
+
+## Built with
+- React JS
+- JavaScript
+- CSS
